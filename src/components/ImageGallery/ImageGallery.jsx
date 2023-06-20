@@ -1,31 +1,31 @@
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
 
-import { List, ListItem } from 'components/ImageGallery/ImageGallery.styled';
+import { List } from 'components/ImageGallery/ImageGallery.styled';
 
-const ImageGallery = ({ data }) => {
-  console.log('first', data);
+const ImageGallery = ({ data, onClickImage }) => {
   return (
     <List>
       {data.map(element => (
-        <ListItem key={element.id}>
-          <ImageGalleryItem element={element} />
-        </ListItem>
+        <li key={element.id}>
+          <ImageGalleryItem element={element} onClickImage={onClickImage} />
+        </li>
       ))}
     </List>
   );
 };
 
-// ImageGallery.propTypes = {
-//   data: PropTypes.arrayOf(
-//     PropTypes.shape({
-//       id: PropTypes.string.isRequired,
-//       name: PropTypes.string.isRequired,
-//       number: PropTypes.string.isRequired,
-//     }).isRequired
-//   ).isRequired,
-//   deleteContact: PropTypes.func.isRequired,
-// };
+ImageGallery.propTypes = {
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      webformatURL: PropTypes.string.isRequired,
+      largeImageURL: PropTypes.string.isRequired,
+      tags: PropTypes.string.isRequired,
+    }).isRequired
+  ).isRequired,
+  onClickImage: PropTypes.func.isRequired,
+};
 
 export default ImageGallery;

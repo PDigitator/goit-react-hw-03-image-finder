@@ -1,4 +1,6 @@
 import { Component } from 'react';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { Report } from 'notiflix/build/notiflix-report-aio';
 import fetchImmages from 'helpers/api';
 
 import Searchbar from 'components/Searchbar/Searchbar';
@@ -12,9 +14,11 @@ class App extends Component {
   state = {
     searchQuery: '',
     images: [],
+    largeImageURL: '',
+    tags: '',
     currentPage: 1,
+    perPage: 12,
     totalPages: 0,
-    // largeImageURL: '',
     showModal: false,
     isLoading: false,
   };
@@ -25,40 +29,46 @@ class App extends Component {
       prevState.currentPage !== this.state.currentPage
     ) {
       this.fetchImmagesData();
-      console.log('work'); //!
     }
   }
 
   getQuery = query => {
-    this.setState({ searchQuery: query });
+    query
+      ? this.setState({ searchQuery: query, images: [], currentPage: 1 })
+      : Notify.info(
+          'Sorry, you need to fill in the search field to search for images.'
+        );
   };
 
   async fetchImmagesData() {
-    const { searchQuery, currentPage } = this.state;
+    const { searchQuery, currentPage, perPage } = this.state;
     this.setState({ isLoading: true });
-    console.log(this.state.isLoading); //!
-    try {
-      const { data } = await fetchImmages(searchQuery, currentPage);
-      // this.takeImmages(data);
-      this.setState({ images: data.hits }); //!
 
-      console.log(this.state.images);
-      console.log('data', data); //!
+    try {
+      const { data } = await fetchImmages(searchQuery, currentPage, perPage);
+      this.takeImmages(data);
     } catch (error) {
-      // Report.failure('ERROR', `${error.message}`, 'Close'); //???
-      console.log(error.message); //!
+      console.log(error.message); //???
+      Report.failure('ERROR', `${error.message}`, 'Close');
     } finally {
       this.setState({ isLoading: false });
     }
   }
 
-  // takeImmages = data => {
-  //   this.setState(prevState => ({
-  //     images: [...prevState.images, ...data.hits],
-  //   }));
+  takeImmages = ({ hits, totalHits }) => {
+    const { perPage } = this.state;
 
-  //   console.log(this.state.images);
-  // };
+    if (hits.length !== 0) {
+      this.setState(prevState => ({
+        images: [...prevState.images, ...hits],
+        totalPages: totalHits / perPage,
+      }));
+    } else {
+      Notify.failure(
+        'Sorry, there are no images matching your search query. Please try again.'
+      );
+    }
+  };
 
   toggleModal = () => {
     this.setState(({ showModal }) => ({
@@ -66,23 +76,45 @@ class App extends Component {
     }));
   };
 
+  getModalImage = (largeImageURL, tags) => {
+    this.setState({ largeImageURL: largeImageURL, tags: tags });
+    this.toggleModal();
+  };
+
+  onLoadMore = () => {
+    this.setState(prevState => ({ currentPage: prevState.currentPage + 1 }));
+  };
+
   render() {
-    const { images, showModal, isLoading } = this.state;
+    const {
+      images,
+      largeImageURL,
+      tags,
+      currentPage,
+      totalPages,
+      showModal,
+      isLoading,
+    } = this.state;
 
     return (
       <>
         <Searchbar getQuery={this.getQuery} />
+
         {images.length > 0 && (
           <Section title="Image gallery">
-            <ImageGallery data={images} />
-            <Button text="Load more" />
+            <ImageGallery data={images} onClickImage={this.getModalImage} />
+            {currentPage < totalPages && (
+              <Button text="Load more" onClickBtn={this.onLoadMore} />
+            )}
           </Section>
         )}
 
         {isLoading && <Loader />}
 
         {showModal && (
-          <Modal onClose={this.toggleModal}>{/* <img src= alt= /> */}</Modal>
+          <Modal onClose={this.toggleModal}>
+            <img src={largeImageURL} alt={tags} />
+          </Modal>
         )}
       </>
     );

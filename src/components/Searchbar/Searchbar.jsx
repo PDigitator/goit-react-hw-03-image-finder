@@ -1,8 +1,6 @@
 import { Component } from 'react';
 import { ReactComponent as SearchIcon } from '../../icons/search-icon.svg';
-// import PropTypes from 'prop-types';
-
-// import Button from 'components/Button/Button';
+import PropTypes from 'prop-types';
 
 import {
   Header,
@@ -20,25 +18,19 @@ class Searchbar extends Component {
 
   handleChange = ({ target: { value } }) => {
     this.setState({ query: value.toLowerCase().trim() });
-    console.log('1', this.state); //!
   };
 
   handleSubmit = event => {
     event.preventDefault();
 
     this.props.getQuery(this.state.query);
-    //   this.reset(); //????
-    console.log('2', this.state); //!
 
-    //  evt.preventDefault();//!
-    //  this.props.onSubmit(this.state.query);//!
-    //  this.setState({ query: '' });//!
-    //  evt.currentTarget.reset();//!
+    this.reset(); //????
   };
 
-  //   reset = () => {
-  //     this.setState({ query: '' });
-  //   }; //????
+  reset = () => {
+    this.setState({ query: '' });
+  }; //????
 
   render() {
     const { query } = this.state;
@@ -68,6 +60,6 @@ class Searchbar extends Component {
   }
 }
 
-// Searchbar.propTypes = { addContact: PropTypes.func.isRequired };
+Searchbar.propTypes = { getQuery: PropTypes.func.isRequired };
 
 export default Searchbar;
