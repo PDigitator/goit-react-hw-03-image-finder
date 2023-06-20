@@ -103,7 +103,7 @@ class App extends Component {
         {images.length > 0 && (
           <Section title="Image gallery">
             <ImageGallery data={images} onClickImage={this.getModalImage} />
-            {currentPage < totalPages && (
+            {currentPage < totalPages && !isLoading && (
               <Button text="Load more" onClickBtn={this.onLoadMore} />
             )}
           </Section>
