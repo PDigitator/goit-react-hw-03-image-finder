@@ -4,7 +4,8 @@ import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
 
 import { List, ListItem } from 'components/ImageGallery/ImageGallery.styled';
 
-const ImageGallery = data => {
+const ImageGallery = ({ data }) => {
+  console.log('first', data);
   return (
     <List>
       {data.map(element => (

@@ -26,14 +26,19 @@ class Searchbar extends Component {
   handleSubmit = event => {
     event.preventDefault();
 
-    //   this.props.addContact({ ...this.state });
-    //   this.reset();
+    this.props.getQuery(this.state.query);
+    //   this.reset(); //????
     console.log('2', this.state); //!
+
+    //  evt.preventDefault();//!
+    //  this.props.onSubmit(this.state.query);//!
+    //  this.setState({ query: '' });//!
+    //  evt.currentTarget.reset();//!
   };
 
   //   reset = () => {
   //     this.setState({ query: '' });
-  //   };
+  //   }; //????
 
   render() {
     const { query } = this.state;

@@ -20,9 +20,15 @@ class Modal extends Component {
     }
   };
 
+  handleOverlayClick = evt => {
+    if (evt.currentTarget === evt.target) {
+      this.props.onClose();
+    }
+  };
+
   render() {
     return createPortal(
-      <Overlay>
+      <Overlay onClick={this.handleOverlayClick}>
         <ModalWrap>{this.props.children}</ModalWrap>
       </Overlay>,
       modalRoot
