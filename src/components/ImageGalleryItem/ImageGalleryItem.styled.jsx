@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const Thumb = styled.div`
-  height: 190px;
+  height: 260px;
 
   border-radius: 4px;
   overflow: hidden;

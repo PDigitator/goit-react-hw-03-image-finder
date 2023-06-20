@@ -1,15 +1,12 @@
 import styled from 'styled-components';
 
 const List = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--indent);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(278px, 1fr));
+  grid-gap: 16px;
+
+  margin-bottom: 20px;
+  padding: 0;
 `;
 
-const ListItem = styled.li`
-  display: inline-flex;
-
-  flex-basis: calc((100% - var(--indent) * (var(--items) - 1)) / var(--items));
-`;
-
-export { List, ListItem };
+export { List };

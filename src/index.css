@@ -3,10 +3,6 @@
 :root {
   --timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   --animation-duration: 250ms;
-
-  /* Others */
-  --indent: 12px;
-  --items: 4;
 }
 
 html {
