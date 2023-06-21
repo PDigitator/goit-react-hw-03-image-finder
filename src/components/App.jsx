@@ -38,7 +38,7 @@ class App extends Component {
   }
 
   getQuery = query => {
-    if (query === this.state.searchQuery) return;
+    if (query === this.state.searchQuery && query !== '') return;
 
     query
       ? this.setState({ searchQuery: query, images: [], currentPage: 1 })
