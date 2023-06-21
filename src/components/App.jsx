@@ -30,9 +30,16 @@ class App extends Component {
     ) {
       this.fetchImmagesData();
     }
+
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: 'smooth',
+    });
   }
 
   getQuery = query => {
+    if (query === this.state.searchQuery) return;
+
     query
       ? this.setState({ searchQuery: query, images: [], currentPage: 1 })
       : Notify.info(
